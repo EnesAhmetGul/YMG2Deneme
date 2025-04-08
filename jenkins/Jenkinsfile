@@ -1,0 +1,20 @@
+pipeline {
+    agent any
+    stages {
+        stage('Kodları Çek') {
+            steps {
+                git 'https://github.com/kullaniciadi/proje-adi.git'
+            }
+        }
+        stage('Docker Image Oluştur') {
+            steps {
+                sh 'docker build -t html-deploy .'
+            }
+        }
+        stage('Container Başlat') {
+            steps {
+                sh 'docker run -d -p 8081:80 --name html-container html-deploy || true'
+            }
+        }
+    }
+}
